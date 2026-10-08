@@ -1,0 +1,19 @@
+// use prisma-8
+model images {
+  id      ObjectId  @id @map("_id")
+  file_id String
+  url     String
+  userId  ObjectId? @unique
+  users   users?    @relation(fields: [userId], references: [id])
+}
+
+model users {
+  id        ObjectId             @id @map("_id")
+  name      String
+  email     String               @unique
+  password  String?
+  following String[]
+  avatar    images?
+  createdAt temporal.createdAt()
+  updatedAt temporal.updatedAt()
+}
