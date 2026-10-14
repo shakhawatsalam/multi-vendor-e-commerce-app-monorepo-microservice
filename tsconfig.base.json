@@ -16,6 +16,9 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": ["@becodemy-ecommerce/source"]
+    "customConditions": ["@becodemy-ecommerce/source"],
+    "paths": {
+      "@packages/*": ["./packages/*"]
+    }
   }
 }

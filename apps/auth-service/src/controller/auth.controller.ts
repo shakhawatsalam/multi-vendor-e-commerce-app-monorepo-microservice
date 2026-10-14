@@ -1,20 +1,37 @@
 import { Request, Response, NextFunction } from "express";
-import { validateRegistrationData } from "../utils/auth.helper";
-import { db } from "../../../../packages/libs/prisma/db";
-import { ValidationError } from "../../../../packages/error-handler";
+import {
+  checkOtpRestrictions,
+  sendOtp,
+  trackOtpRequests,
+  validateRegistrationData,
+} from "../utils/auth.helper";
+import { db } from "@packages/libs/prisma/db";
+import { ValidationError } from "@packages/error-handler";
 // Register a new user
 export const userRegistration = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  validateRegistrationData(req.body, "user");
+  try {
+    validateRegistrationData(req.body, "user");
 
-  const { name, email } = req.body;
+    const { name, email } = req.body;
 
-  const existingUser = await db.orm.users.where({ email }).first();
+    const existingUser = await db.orm.users.where({ email }).first();
 
-  if (existingUser) {
-    return next(new ValidationError("User already exists with this email."));
+    if (existingUser) {
+      return next(new ValidationError("User already exists with this email."));
+    }
+
+    await checkOtpRestrictions(email, next);
+    await trackOtpRequests(email, next);
+    await sendOtp(name, email, "user-activation-mail");
+
+    res.status(200).json({
+      message: "OTP sent to email. Please verify your account",
+    });
+  } catch (error) {
+    return next(error);
   }
 };

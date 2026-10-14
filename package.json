@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "npx nx run-many --target=serve --all",
+    "dev": "npx nx run-many --target=serve --all --outputStyle=stream",
     "postinstall": "prisma skills sync || exit 0",
     "contract:emit": "prisma contract emit"
   },
@@ -15,11 +15,15 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^18.0.6",
+    "ejs": "^7.0.1",
     "express": "^5.1.0",
     "express-http-proxy": "^2.1.2",
     "express-rate-limit": "^8.7.0",
+    "ioredis": "^6.0.0",
     "mongodb": "^7.7.0",
     "morgan": "^1.12.1",
+    "nodemailer": "^10.0.16",
+    "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
@@ -40,6 +44,7 @@
     "@swc/jest": "~0.2.38",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
+    "@types/ejs": "^3.1.5",
     "@types/express": "^5.0.0",
     "@types/express-http-proxy": "^1.6.7",
     "@types/jest": "~30.0.0",
