@@ -4,6 +4,7 @@ import { NextFunction } from "express";
 import redis from "@packages/libs/redis";
 import { sendEmail } from "./sendMail";
 
+// Registration
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const validateRegistrationData = (
@@ -26,6 +27,7 @@ export const validateRegistrationData = (
   }
 };
 
+// OTP request limits
 export const checkOtpRestrictions = async (
   email: string,
   next: NextFunction,
@@ -58,7 +60,7 @@ export const trackOtpRequests = async (email: string, next: NextFunction) => {
   let otpRequests = parseInt((await redis.get(otpRequestKey)) || "0");
 
   if (otpRequests >= 2) {
-    await redis.set(`otp_spam_lock:${email}`, "locked", "EX", 3600); // Lock for 1 hour's
+    await redis.set(`otp_spam_lock:${email}`, "locked", "EX", 3600);
 
     return next(
       new ValidationError(
@@ -67,9 +69,10 @@ export const trackOtpRequests = async (email: string, next: NextFunction) => {
     );
   }
 
-  await redis.set(otpRequestKey, otpRequests + 1, "EX", 3600); // Track request for one hour.
+  await redis.set(otpRequestKey, otpRequests + 1, "EX", 3600);
 };
 
+// OTP delivery and verification
 export const sendOtp = async (
   name: string,
   email: string,
@@ -77,8 +80,8 @@ export const sendOtp = async (
 ) => {
   const otp = crypto.randomInt(1000, 9999).toString();
   await sendEmail(email, "Verify Your Email", template, { name, otp });
-  await redis.set(`otp:${email}`, otp, "EX", 300);
-  await redis.set(`otp_cooldown:${email}`, "true", "EX", 60);
+  await redis.set(`otp:${email}`, otp, "EX", 300); // OTP expires after 5 minutes.
+  await redis.set(`otp_cooldown:${email}`, "true", "EX", 60); // Allow one request per minute.
 };
 
 export const verifyOtp = async (
@@ -97,7 +100,7 @@ export const verifyOtp = async (
 
   if (storedOtp !== otp) {
     if (failedAttempts >= 2) {
-      await redis.set(`otp_lock:${email}`, "locked", "EX", 1800); // Lock for 30 minutes
+      await redis.set(`otp_lock:${email}`, "locked", "EX", 1800); // Lock verification for 30 minutes.
       await redis.del(`otp:${email}`, failedAttemptsKey);
       throw new ValidationError(
         "Too many failed attempts. Your account is locked for 30 minutes",
