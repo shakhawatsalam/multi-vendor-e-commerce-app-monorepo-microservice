@@ -4,14 +4,16 @@
   "license": "MIT",
   "scripts": {
     "dev": "npx nx run-many --target=serve --all --outputStyle=stream",
-    "postinstall": "prisma skills sync || exit 0",
-    "contract:emit": "prisma contract emit"
+    "postinstall": "prisma generate --schema=packages/libs/prisma/schema.prisma",
+    "prisma:generate": "prisma generate --schema=packages/libs/prisma/schema.prisma",
+    "prisma:push": "prisma db push --schema=packages/libs/prisma/schema.prisma",
+    "auth-docs": "node apps/auth-service/src/swagger.js"
   },
   "private": true,
   "dependencies": {
-    "@prisma/client": "^7.10.0",
-    "@prisma/orm-mongo": "^8.0.0-rc.16",
+    "@prisma/client": "^6.19.0",
     "axios": "^1.20.0",
+    "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^18.0.6",
@@ -20,6 +22,7 @@
     "express-http-proxy": "^2.1.2",
     "express-rate-limit": "^8.7.0",
     "ioredis": "^6.0.0",
+    "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.7.0",
     "morgan": "^1.12.1",
     "nodemailer": "^10.0.16",
@@ -37,7 +40,6 @@
     "@nx/webpack": "23.2.1",
     "@nx/workspace": "23.2.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
-    "@prisma/cli-engine": "^0.6.3",
     "@svgr/webpack": "^8.0.1",
     "@swc/core": "~1.15.5",
     "@swc/helpers": "~0.5.18",
@@ -56,7 +58,7 @@
     "jest-environment-node": "~30.3.0",
     "jest-util": "~30.3.0",
     "nx": "23.2.1",
-    "prisma": "^8.0.0-rc.21",
+    "prisma": "^6.19.0",
     "react-refresh": "^0.10.0",
     "ts-jest": "^29.4.7",
     "ts-node": "10.9.1",
@@ -68,5 +70,8 @@
   },
   "workspaces": [
     "apps/*"
-  ]
+  ],
+  "prisma": {
+    "schema": "packages/libs/prisma/schema.prisma"
+  }
 }

@@ -6,10 +6,10 @@
     "version": "1.0.0"
   },
   "host": "localhost:6001",
-  "basePath": "/",
+  "basePath": "/api",
   "schemes": ["http"],
   "paths": {
-    "/api/user-registration": {
+    "/user-registration": {
       "post": {
         "description": "",
         "parameters": [
@@ -26,6 +26,7 @@
                   "example": "freelancershawon16@gmail.com"
                 },
                 "password": {
+                  "type": "string",
                   "example": "123456"
                 }
               }
@@ -35,6 +36,40 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/verify-user": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "freelancershawon16@gmail.com"
+                },
+                "otp": {
+                  "example": "any"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "123456"
+                },
+                "name": {
+                  "example": "shawon"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
           }
         }
       }

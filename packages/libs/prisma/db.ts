@@ -1,9 +1,4 @@
 import "dotenv/config";
-import mongo from "@prisma/orm-mongo/runtime";
-import type { Contract } from "./contract";
-import contractJson from "./contract.json";
+import { PrismaClient } from "@prisma/client";
 
-export const db = mongo<Contract>({
-  contractJson,
-  url: process.env["DATABASE_URL"]!,
-});
+export const prisma = new PrismaClient();
