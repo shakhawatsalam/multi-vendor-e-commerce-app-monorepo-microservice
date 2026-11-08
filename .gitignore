@@ -47,3 +47,7 @@ Thumbs.db
 test-output
 node_modules/
 dist/
+
+# Next.js
+.next
+out

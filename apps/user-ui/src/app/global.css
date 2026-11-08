@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --font-roboto: var(--font-roboto);
+  --font-poppins: var(--font-poppins);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
