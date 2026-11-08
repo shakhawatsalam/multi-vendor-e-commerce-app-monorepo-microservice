@@ -1,7 +1,9 @@
 "use client";
 
+import CartIcon from "@/assets/svgs/cart-icon";
+import ProfileIcon from "@/assets/svgs/prifile-icon";
 import { navItems } from "@/configs/constants";
-import { AlignLeft, ChevronDown } from "lucide-react";
+import { AlignLeft, ChevronDown, HeartIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -12,7 +14,7 @@ const HeaderBottom = () => {
   // Track scroll position
   useEffect(() => {
     const handleScroll = () => {
-      if (window.screenY > 100) {
+      if (window.scrollY > 100) {
         setIsSticky(true);
       } else {
         setIsSticky(false);
@@ -62,9 +64,41 @@ const HeaderBottom = () => {
           ))}
         </div>
 
-
         <div>
-          
+          {isSticky && (
+            <div className="flex items-center gap-8 pb-2">
+              <div className="flex items-center gap-2">
+                <Link
+                  href={"/login"}
+                  className="border-2 w-[50px] h-[50px] flex items-center justify-center rounded-full border-[#010f1c1a]"
+                >
+                  <ProfileIcon />
+                </Link>
+
+                <Link href={"/login"}>
+                  <span className="block font-medium">Hello,</span>
+                  <span className="font-semibold">Sing in</span>
+                </Link>
+              </div>
+
+              <div className="flex items-center gap-5">
+                <Link href={"/wishlist"} className="relative">
+                  <HeartIcon />
+
+                  <div className="w-6 h-6 border-2 border-white bg-red-500 rounded-full flex items-center justify-center absolute top-[-10px] right-[-10px]">
+                    <span className="text-white font-medium text-sm">0</span>
+                  </div>
+                </Link>
+                <Link href={"/cart"} className="relative">
+                  <CartIcon />
+
+                  <div className="w-6 h-6 border-2 border-white bg-red-500 rounded-full flex items-center justify-center absolute top-[-10px] right-[-10px]">
+                    <span className="text-white font-medium text-sm">0</span>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
