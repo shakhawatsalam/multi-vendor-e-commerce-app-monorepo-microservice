@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import {
   loginUser,
+  refreshToken,
   resetUserPassword,
   userForgotPassword,
   userRegistration,
@@ -16,5 +17,6 @@ router.post("/login-user", loginUser);
 router.post("/forgot-password-user", userForgotPassword);
 router.post("/reset-password-user", resetUserPassword);
 router.post("/verify-forgot-password-user", verifyForgotPasswordOtp);
+router.post("/refresh-token-user", refreshToken);
 
 export default router;
