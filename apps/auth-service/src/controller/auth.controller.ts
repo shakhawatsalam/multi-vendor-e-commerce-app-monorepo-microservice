@@ -177,6 +177,23 @@ export const refreshToken = async (
   }
 };
 
+// get logged in user info
+export const getUser = async (
+  req: any,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const user = req.user;
+    res.status(201).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // user forgot password
 export const userForgotPassword = async (
   req: Request,
@@ -188,7 +205,7 @@ export const userForgotPassword = async (
 
 // verify forgot password otp
 
-export const verifyForgotPassword = async (
+export const verifyUserForgotPassword = async (
   req: Request,
   res: Response,
   next: NextFunction,
